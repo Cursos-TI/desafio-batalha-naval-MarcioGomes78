@@ -1,12 +1,65 @@
 #include <stdio.h>
-#include <stdlib.h>
 
-int main(int arg, char *argv[])
-{
+#define SIZE 10
+
+void exibirTabuleiro(int tabuleiro[SIZE][SIZE]) {
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++) {
+            printf("%d ", tabuleiro[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+void aplicarHabilidade(int tabuleiro[SIZE][SIZE], int habilidade[5][5], int origemLinha, int origemColuna) {
+    for (int i = 0; i < 5; i++) {
+        for (int j = 0; j < 5; j++) {
+            int linha = origemLinha - 2 + i; // Ajusta a linha para o tabuleiro
+            int coluna = origemColuna - 2 + j; // Ajusta a coluna para o tabuleiro
+            if (habilidade[i][j] == 1 && linha >= 0 && linha < SIZE && coluna >= 0 && coluna < SIZE) {
+                tabuleiro[linha][coluna] = 5; // Marca a área afetada
+            }
+        }
+    }
+}
+
+int main() {
+    int tabuleiro[SIZE][SIZE] = {0}; // Inicializa o tabuleiro com água (0)
+
+    // Matriz de habilidade em cone
+    int cone[5][5] = {
+        {0, 0, 1, 0, 0},
+        {0, 1, 1, 1, 0},
+        {1, 1, 1, 1, 1},
+        {0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0}
+    };
+
+    // Matriz de habilidade em cruz
+    int cruz[5][5] = {
+        {0, 0, 1, 0, 0},
+        {1, 1, 1, 1, 1},
+        {0, 0, 1, 0, 0}
+    };
+
+    // Matriz de habilidade em octaedro
+    int octaedro[5][5] = {
+        {0, 0, 1, 0, 0},
+        {0, 1, 1, 1, 0},
+        {0, 0, 1, 0, 0}
+    };
+
+    // Aplicar habilidades no tabuleiro
+    aplicarHabilidade(tabuleiro, cone, 2, 2); // Cone no centro (2, 2)
+    aplicarHabilidade(tabuleiro, cruz, 5, 5); // Cruz no centro (5, 5)
+    aplicarHabilidade(tabuleiro, octaedro, 7, 7); // Octaedro no centro (7, 7)
+
+    // Exibir o tabuleiro
+    exibirTabuleiro(tabuleiro);
 
     char colunas[10] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'};
-    int tabuleiro[10][10] = {0};
-    int i, j;
+    
+    int i, j = 0;
 
     printf("\n");
     printf("########## TABULEIRO BATALHA NAVAL AGUA ##########\n\n");
